@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_424426_auto_lang.ConfigUtil</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>ConfigUtil</name>
+        <script><![CDATA[/* global Class, GlideRecord, gs */
+/* eslint no-undef: "error" */
+var ConfigUtil = Class.create();
+ConfigUtil.prototype = {
+	initialize: function() {
+
+	},
+
+	loadClassicUIStatus: function () {
+		const classicUIStatus = {
+			property_name: "glide.entry.page.script",
+			property_sys_id: "",
+			status: "",
+			status_label: ""
+		};
+
+		const propertyGr = new GlideRecord("sys_properties");
+		propertyGr.addQuery("name", classicUIStatus.property_name);
+		propertyGr.setLimit(1);
+		propertyGr.query();
+		if (propertyGr.next()) {
+			classicUIStatus.property_sys_id = propertyGr.getUniqueValue();
+
+			const value = propertyGr.value.toString();
+			if (value.startsWith("new x_424426_auto_lang.SetLang()")) {
+				classicUIStatus.status = "ok";
+				classicUIStatus.status_label = "OK";
+			} else {
+				classicUIStatus.status = "required";
+				classicUIStatus.status_label = "Not yet configured";
+			}
+		} else {
+			classicUIStatus.status = "error";
+			classicUIStatus.status_label = "Entry Page Script Property does not exist";
+		}
+		
+		return classicUIStatus;
+	},
+
+	loadPortalStatus: function () {
+		const portalStatus = [];
+		const portalGr = new GlideRecord("sp_portal");
+		portalGr.query();
+		while (portalGr.next()) {
+			// Calculate the portal status
+			// the language needs to be set before any content is loaded, therefore we need to verify if the first
+			// loaded element for each portal has injected the language loader
+			// the elements loaded are in this order: header (via theme) > login page
+			// Note: If neither theme nor login page are defined, a built-in non-widget-based login screen is loaded
+			// -> in this case we do not have any option to force the language loading
+			const theme = portalGr.getValue("theme");
+			if (theme) {
+				const themeJSIncludeGr = new GlideRecord("m2m_sp_theme_js_include");
+				themeJSIncludeGr.addQuery("sp_theme", theme);
+				themeJSIncludeGr.addQuery("sp_js_include", "941d4ac997e43110d70ef207f053af59"); // Auto Language (JS Include)
+				themeJSIncludeGr.setLimit(1);
+				themeJSIncludeGr.query();
+				if (themeJSIncludeGr.hasNext()) {
+					portalStatus.push({
+						sys_id: portalGr.getUniqueValue(),
+						display_value: portalGr.getDisplayValue(),
+						url_suffix: portalGr.url_suffix.toString(),
+						status: "ok",
+						status_label: "OK"
+					});
+				} else {
+					portalStatus.push({
+						sys_id: portalGr.getUniqueValue(),
+						display_value: portalGr.getDisplayValue(),
+						url_suffix: portalGr.url_suffix.toString(),
+						status: "required",
+						status_label: "Needs Configuration",
+						config: {
+							table: "m2m_sp_theme_js_include",
+							fields: {
+								sp_theme: theme,
+								sp_js_include: "941d4ac997e43110d70ef207f053af59"
+							}
+						}
+					});
+				}
+			} else {
+				// if the theme is not set, it is sufficient to inject the login via the first widget(instance)
+				const loginPage = portalGr.getValue("login_page");
+				if (loginPage) {
+					const firstWidgetSysID = getFirstWidgetSysID(loginPage);
+					if (firstWidgetSysID) {
+						const dependencyGr = new GlideRecord("m2m_sp_widget_dependency");
+						dependencyGr.addQuery("sp_widget", firstWidgetSysID);
+						dependencyGr.addQuery("sp_dependency", "988c8e8997e43110d70ef207f053afa7"); // Auto Language (Widget Dependency)
+						dependencyGr.setLimit(1);
+						dependencyGr.query();
+						if (dependencyGr.hasNext()) {
+							portalStatus.push({
+								sys_id: portalGr.getUniqueValue(),
+								display_value: portalGr.getDisplayValue(),
+								url_suffix: portalGr.url_suffix.toString(),
+								status: "ok",
+								status_label: "OK"
+							});
+						} else {
+							// the first loaded widget on the login page does not have a language inject configured
+							portalStatus.push({
+								sys_id: portalGr.getUniqueValue(),
+								display_value: portalGr.getDisplayValue(),
+								url_suffix: portalGr.url_suffix.toString(),
+								status: "required",
+								status_label: "Needs Configuration",
+								config: {
+									table: "m2m_sp_widget_dependency",
+									fields: {
+										sp_widget: firstWidgetSysID,
+										sp_dependency: "988c8e8997e43110d70ef207f053afa7"
+									}
+								}
+							});
+						}
+					} else {
+						portalStatus.push({
+							sys_id: portalGr.getUniqueValue(),
+							display_value: portalGr.getDisplayValue(),
+							url_suffix: portalGr.url_suffix.toString(),
+							status: "error",
+							status_label: "Not possible: Login Page has no Widgets"
+						});
+					}
+				} else {
+					// if no login page is configured, a hard coded built-in login page will be used
+					// unfortunately this page doesn't contain any widget or other way for us to 
+					// inject something...
+					portalStatus.push({
+						sys_id: portalGr.getUniqueValue(),
+						display_value: portalGr.getDisplayValue(),
+						url_suffix: portalGr.url_suffix.toString(),
+						status: "error",
+						status_label: "Not possible: No Theme nor Login Page configured"
+					});
+				}
+			}
+		}
+		
+		return portalStatus;
+		
+		function getFirstWidgetSysID(pageSysID) {
+			const containerGr = new GlideRecord("sp_container");
+			containerGr.addQuery("sp_page", pageSysID);
+			containerGr.setLimit(1);
+			containerGr.query();
+			if (containerGr.next()) {
+				const rowGr = new GlideRecord("sp_row");
+				rowGr.addQuery("sp_container", containerGr.sys_id);
+				rowGr.setLimit(1);
+				rowGr.query();
+				if (rowGr.next()) {
+					const columnGr = new GlideRecord("sp_column");
+					columnGr.addQuery("sp_row", rowGr.sys_id);
+					columnGr.setLimit(1);
+					columnGr.query();
+					if (columnGr.next()) {
+						const instanceGr = new GlideRecord("sp_instance");
+						instanceGr.addQuery("active", true);
+						instanceGr.addQuery("sp_column", columnGr.sys_id);
+						instanceGr.setLimit(1);
+						instanceGr.query();
+						if (instanceGr.next()) {
+							return instanceGr.getValue("sp_widget") || "";
+						}
+					}
+				}
+			}
+			
+			return "";
+		}
+	},
+
+	type: 'ConfigUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-08-08 10:18:25</sys_created_on>
+        <sys_id>f66d611197a47110d70ef207f053afe5</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>ConfigUtil</sys_name>
+        <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
+        <sys_update_name>sys_script_include_f66d611197a47110d70ef207f053afe5</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-08-08 20:56:04</sys_updated_on>
+    </sys_script_include>
+</record_update>

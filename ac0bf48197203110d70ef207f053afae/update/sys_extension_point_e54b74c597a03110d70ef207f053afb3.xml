@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_extension_point">
+    <sys_extension_point action="INSERT_OR_UPDATE">
+        <api_name>x_424426_auto_lang.AutoLangExt</api_name>
+        <description/>
+        <example><![CDATA[var AutoLangExt = Class.create();
+AutoLangExt.prototype = {
+    initialize: function() {
+    },
+
+    getRequestHeaderValue: function() {
+        var currentScopeName = gs.getCurrentScopeName();
+		var isGlobalScope = currentScopeName == 'global' || currentScopeName == 'rhino.global';
+		if (isGlobalScope) {
+			return GlideTransaction.get().getRequest().getHeader("Accept-Language");
+		} else {
+			// gs.info("[AutoLang] The 'getRequestHeaderValue' should be implemented using a Global Implementation of the "AutoLangExt" Extension Point!");
+		}
+    },
+
+    type: 'AutoLangExt'
+};]]></example>
+        <name>AutoLangExt</name>
+        <restrict_scope>false</restrict_scope>
+        <sys_class_name>sys_extension_point</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-08-07 11:48:19</sys_created_on>
+        <sys_id>e54b74c597a03110d70ef207f053afb3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>AutoLangExt</sys_name>
+        <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
+        <sys_update_name>sys_extension_point_e54b74c597a03110d70ef207f053afb3</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-08-07 11:48:19</sys_updated_on>
+    </sys_extension_point>
+</record_update>

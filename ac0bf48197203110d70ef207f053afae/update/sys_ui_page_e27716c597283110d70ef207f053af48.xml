@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function configPortal(portalSysID) {
+	var portal = configStatus.portalStatus.find(function (p) { return p.sys_id == portalSysID; });
+	var gm = new GlideModalForm("Configure " + portal.display_value, portal.config.table);
+	gm.addParm("sysparm_query", Object.keys(portal.config.fields).map(function (f) {
+		return f + "=" + portal.config.fields[f];
+	}).join("^"));
+	gm.render();
+}
+
+function configureClassicUIProperty() {
+	if (configStatus.currentApplicationID != "global") {
+		alert("Please switch to 'Global' Scope");
+		return;
+	}
+	
+	var gm = new GlideModalForm("Configure glide.entry.page.script", "sys_properties");
+	if (configStatus.classicUI.property_sys_id) {
+		gm.setSysID(configStatus.classicUI.property_sys_id);
+	} else {
+		gm.addParm("sysparm_query", "name=" + configStatus.classicUI.property_name);
+	}
+	
+	gm.setOnloadCallback(function (form) {
+		if (configStatus.classicUI.property_sys_id) {
+			var propertyValue = form.getValue("value");
+			if (!propertyValue.indexOf("x_424426_auto_lang.SetLang") == -1) {
+				if (propertyValue) {
+					form.setValue("new x_424426_auto_lang.SetLang() && " + propertyValue);
+					form.showFieldMsg("value", "The value was automatically updated to support automatic language selection on the login.do page.", "info");
+					return;
+				}
+			}
+		}
+		
+		form.setValue("new x_424426_auto_lang.SetLang()");
+	});
+	gm.render();
+}]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_424426_auto_lang_config.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<g:evaluate>
+		const configUtil = new x_424426_auto_lang.ConfigUtil();
+		const configStatus = {
+			classicUI: configUtil.loadClassicUIStatus(),
+			portalStatus: configUtil.loadPortalStatus(),
+			currentApplicationID: gs.getCurrentApplicationId()
+		};
+	</g:evaluate>
+	<script>
+		var configStatus = ${JSON.stringify(configStatus)};
+	</script>
+	<style>
+		table.language-status td[data-status]::before {
+			border-radius: 50%;
+			display: inline-flex;
+			height: 12px;
+			width: 12px;
+			position: relative;
+			top: 2px;
+			margin-right: 5px;
+			content: ""
+		}
+		
+		table.language-status td[data-status="ok"]::before {
+			background-color: green;
+		}
+		
+		table.language-status td[data-status="error"]::before {
+			background-color: red;
+		}
+		
+		table.language-status td[data-status="required"]::before {
+			background-color: grey;
+		}
+	</style>
+	<table class="table table-hover language-status">
+		<thead>
+			<tr>
+				<th style="width: 20%">Name</th>
+				<th style="width: 30%">Description</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Classic UI / "Backend" Login</td>
+				<td data-status="${configStatus.classicUI.status}">${configStatus.classicUI.status_label}</td>
+				<td>
+					<j:if test="${configStatus.classicUI.status != 'ok'}">
+						<button onclick="configureClassicUIProperty()">Configure</button>
+					</j:if>
+				</td>
+			</tr>
+			<j:forEach var="jvar_portal" items="${configStatus.portalStatus}">
+                <tr>
+                    <td>Portal ${jvar_portal.url_suffix}</td>
+                    <td data-status="${jvar_portal.status}">${jvar_portal.status_label}</td>
+					<td>
+						<j:if test="${jvar_portal.status == 'required'}">
+							<button onclick="configPortal('${jvar_portal.sys_id}')">Configure</button>
+						</j:if>					
+					</td>
+                </tr>
+            </j:forEach>
+		</tbody>
+	</table>
+</j:jelly>]]></html>
+        <name>config</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-08-07 18:25:05</sys_created_on>
+        <sys_id>e27716c597283110d70ef207f053af48</sys_id>
+        <sys_mod_count>43</sys_mod_count>
+        <sys_name>config</sys_name>
+        <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
+        <sys_update_name>sys_ui_page_e27716c597283110d70ef207f053af48</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-08-08 21:20:32</sys_updated_on>
+    </sys_ui_page>
+</record_update>

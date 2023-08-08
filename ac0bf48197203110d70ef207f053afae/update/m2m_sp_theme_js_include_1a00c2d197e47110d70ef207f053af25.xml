@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_theme_js_include">
+    <m2m_sp_theme_js_include action="INSERT_OR_UPDATE">
+        <order/>
+        <sp_js_include display_value="Auto Language">941d4ac997e43110d70ef207f053af59</sp_js_include>
+        <sp_theme display_value="ESC Theme">cef4eb8623882300fb0c949e27bf65cb</sp_theme>
+        <sys_class_name>m2m_sp_theme_js_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-08-08 11:19:44</sys_created_on>
+        <sys_id>1a00c2d197e47110d70ef207f053af25</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Auto Language.ESC Theme</sys_name>
+        <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
+        <sys_update_name>m2m_sp_theme_js_include_1a00c2d197e47110d70ef207f053af25</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-08-08 11:19:44</sys_updated_on>
+    </m2m_sp_theme_js_include>
+</record_update>
