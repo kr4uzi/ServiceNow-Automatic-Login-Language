@@ -64,13 +64,17 @@ ConfigUtil.prototype = {
 				themeJSIncludeGr.addQuery("sp_js_include", "941d4ac997e43110d70ef207f053af59"); // Auto Language (JS Include)
 				themeJSIncludeGr.setLimit(1);
 				themeJSIncludeGr.query();
-				if (themeJSIncludeGr.hasNext()) {
+				if (themeJSIncludeGr.next()) {
 					portalStatus.push({
 						sys_id: portalGr.getUniqueValue(),
 						display_value: portalGr.getDisplayValue(),
 						url_suffix: portalGr.url_suffix.toString(),
 						status: "ok",
-						status_label: "OK"
+						status_label: "OK",
+						config: {
+							table: "m2m_sp_theme_js_include",
+							sys_id: themeJSIncludeGr.getUniqueValue()
+						}
 					});
 				} else {
 					portalStatus.push({
@@ -99,13 +103,17 @@ ConfigUtil.prototype = {
 						dependencyGr.addQuery("sp_dependency", "988c8e8997e43110d70ef207f053afa7"); // Auto Language (Widget Dependency)
 						dependencyGr.setLimit(1);
 						dependencyGr.query();
-						if (dependencyGr.hasNext()) {
+						if (dependencyGr.next()) {
 							portalStatus.push({
 								sys_id: portalGr.getUniqueValue(),
 								display_value: portalGr.getDisplayValue(),
 								url_suffix: portalGr.url_suffix.toString(),
 								status: "ok",
-								status_label: "OK"
+								status_label: "OK",
+								config: {
+									table: "m2m_sp_widget_dependency",
+									sys_id: dependencyGr.getUniqueValue()
+								}
 							});
 						} else {
 							// the first loaded widget on the login page does not have a language inject configured
@@ -188,13 +196,13 @@ ConfigUtil.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-08 10:18:25</sys_created_on>
         <sys_id>f66d611197a47110d70ef207f053afe5</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>ConfigUtil</sys_name>
         <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
         <sys_update_name>sys_script_include_f66d611197a47110d70ef207f053afe5</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-08-18 13:27:57</sys_updated_on>
+        <sys_updated_on>2023-08-18 18:12:16</sys_updated_on>
     </sys_script_include>
 </record_update>

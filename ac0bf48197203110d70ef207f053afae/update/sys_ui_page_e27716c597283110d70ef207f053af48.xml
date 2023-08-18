@@ -6,13 +6,24 @@
 	var gm = new GlideModalForm("Configure " + portal.display_value, portal.config.table, function () {
 		reloadWindow(window);
 	});
+	
 	gm.setOnloadCallback(function (form) {
 		var gForm = window.frames["dialog_frame"].g_form;
-		gForm.addInfoMessage("Saving this record will enable the 'Auto Login Language' for Portal /" + portal.url_suffix);
+		if (portal.config.sys_id) {
+			gForm.addInfoMessage("This record enables the 'Auto Login Language' for Portal /" + portal.url_suffix);
+		} else {
+			gForm.addInfoMessage("Saving this record will enable the 'Auto Login Language' for Portal /" + portal.url_suffix);
+		}
 	});
-	gm.addParm("sysparm_query", Object.keys(portal.config.fields).map(function (f) {
-		return f + "=" + portal.config.fields[f];
-	}).join("^"));
+	
+	if (portal.config.fields) {
+		gm.addParm("sysparm_query", Object.keys(portal.config.fields).map(function (f) {
+			return f + "=" + portal.config.fields[f];
+		}).join("^"));
+	} else if (portal.config.sys_id) {
+		gm.setSysID(portal.config.sys_id);
+	}
+	
 	gm.render();
 }
 
@@ -88,11 +99,11 @@ function configureClassicUIProperty() {
 			background-color: grey;
 		}
 	</style>
-	<table class="table table-hover language-status">
+	<table class="table table-hover language-status" style="width: 600px">
 		<thead>
 			<tr>
-				<th style="width: 20%">Name</th>
-				<th style="width: 30%">Description</th>
+				<th style="width: 40%">Name</th>
+				<th style="width: 40%">Description</th>
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -101,8 +112,9 @@ function configureClassicUIProperty() {
 				<td>Classic UI / "Backend" Login</td>
 				<td data-status="${configStatus.classicUI.status}">${configStatus.classicUI.status_label}</td>
 				<td>
+					<button onclick="configureClassicUIProperty()">Configure</button>
 					<j:if test="${configStatus.classicUI.status != 'ok'}">
-						<button onclick="configureClassicUIProperty()">Configure</button>
+						<!--<button onclick="configureClassicUIProperty()">Configure</button>-->
 					</j:if>
 				</td>
 			</tr>
@@ -111,9 +123,10 @@ function configureClassicUIProperty() {
                     <td>Portal ${jvar_portal.url_suffix}</td>
                     <td data-status="${jvar_portal.status}">${jvar_portal.status_label}</td>
 					<td>
+						<button onclick="configPortal('${jvar_portal.sys_id}')">Configure</button>
 						<j:if test="${jvar_portal.status == 'required'}">
-							<button onclick="configPortal('${jvar_portal.sys_id}')">Configure</button>
-						</j:if>					
+							<!--<button onclick="configPortal('${jvar_portal.sys_id}')">Configure</button>-->
+						</j:if>
 					</td>
                 </tr>
             </j:forEach>
@@ -126,13 +139,13 @@ function configureClassicUIProperty() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-07 18:25:05</sys_created_on>
         <sys_id>e27716c597283110d70ef207f053af48</sys_id>
-        <sys_mod_count>49</sys_mod_count>
+        <sys_mod_count>58</sys_mod_count>
         <sys_name>config</sys_name>
         <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
         <sys_policy/>
         <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
         <sys_update_name>sys_ui_page_e27716c597283110d70ef207f053af48</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-08-18 13:50:28</sys_updated_on>
+        <sys_updated_on>2023-08-18 18:13:05</sys_updated_on>
     </sys_ui_page>
 </record_update>
