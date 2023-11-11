@@ -3,23 +3,23 @@
         <category>general</category>
         <client_script><![CDATA[function configPortal(portalSysID) {
 	var portal = configStatus.portalStatus.find(function (p) { return p.sys_id == portalSysID; });
-	var gm = new GlideModalForm("Configure " + portal.display_value, portal.config.table, function () {
+	var gm = new GlideModalForm('Configure ' + portal.display_value, portal.config.table, function () {
 		reloadWindow(window);
 	});
 	
 	gm.setOnloadCallback(function (form) {
-		var gForm = window.frames["dialog_frame"].g_form;
+		var gForm = window.frames['dialog_frame'].g_form;
 		if (portal.config.sys_id) {
-			gForm.addInfoMessage("This record enables the 'Auto Login Language' for Portal /" + portal.url_suffix);
+			gForm.addInfoMessage('This record enables the "Auto Login Language" for Portal /' + portal.url_suffix);
 		} else {
-			gForm.addInfoMessage("Saving this record will enable the 'Auto Login Language' for Portal /" + portal.url_suffix);
+			gForm.addInfoMessage('Saving this record will enable the "Auto Login Language" for Portal /' + portal.url_suffix);
 		}
 	});
 	
 	if (portal.config.fields) {
-		gm.addParm("sysparm_query", Object.keys(portal.config.fields).map(function (f) {
-			return f + "=" + portal.config.fields[f];
-		}).join("^"));
+		gm.addParm('sysparm_query', Object.keys(portal.config.fields).map(function (f) {
+			return f + '=' + portal.config.fields[f];
+		}).join('^'));
 	} else if (portal.config.sys_id) {
 		gm.setSysID(portal.config.sys_id);
 	}
@@ -28,31 +28,36 @@
 }
 
 function configureClassicUIProperty() {
-	if (configStatus.currentApplicationID != "global") {
-		alert("Please switch to 'Global' Scope");
+	if (configStatus.currentApplicationID != 'global') {
+		alert('Please switch to "Global" Scope');
 		return;
 	}
 	
-	var gm = new GlideModalForm("Configure glide.entry.page.script", "sys_properties", function () {
+	var gm = new GlideModalForm('Configure glide.entry.page.script', 'sys_properties', function () {
 		reloadWindow(window);
 	});
 	if (configStatus.classicUI.property_sys_id) {
 		gm.setSysID(configStatus.classicUI.property_sys_id);
 	} else {
-		gm.addParm("sysparm_query", "name=" + configStatus.classicUI.property_name + "^description=Script executed on server to determine where to send users when they first access the system. The script will return the redirect URL in String format.^value=x_424426_auto_lang.SetLang()");
+		gm.addParm('sysparm_query', 
+			'name=' + configStatus.classicUI.property_name +
+			'^description=Script executed on server to determine where to send users when they first access the system. The script will return the redirect URL in String format.' +
+			'^value=x_424426_auto_lang.SetLang()'
+		);
 	}
 	
 	gm.setOnloadCallback(function (form) {
-		var gForm = window.frames["dialog_frame"].g_form;
+		var gForm = window.frames['dialog_frame'].g_form;
 		if (configStatus.classicUI.property_sys_id) {
-			var propertyValue = gForm.getValue("value");
-			if (propertyValue.indexOf("x_424426_auto_lang.SetLang()") == -1) {
+			var propertyValue = gForm.getValue('value');
+			if (propertyValue.indexOf('x_424426_auto_lang.SetLang()') == -1) {
 				if (propertyValue) {
-					gForm.setValue("value", "x_424426_auto_lang.SetLang() && " + propertyValue);
-					gForm.showFieldMsg("value", "The value was automatically updated to support automatic language selection on the login.do page.", "info");
-					return;
+					gForm.setValue('value', 'x_424426_auto_lang.SetLang() && ' + propertyValue);
+					gForm.showFieldMsg('value', 'The value was automatically updated to support automatic language selection on the login.do page.', 'info');
 				}
 			}
+		} else {
+			gForm.setValue('ignore_cache', false);
 		}
 	});
 	gm.render();
@@ -137,13 +142,13 @@ function configureClassicUIProperty() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-07 18:25:05</sys_created_on>
         <sys_id>e27716c597283110d70ef207f053af48</sys_id>
-        <sys_mod_count>65</sys_mod_count>
+        <sys_mod_count>66</sys_mod_count>
         <sys_name>config</sys_name>
         <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
         <sys_policy/>
         <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
         <sys_update_name>sys_ui_page_e27716c597283110d70ef207f053af48</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-09-11 14:02:53</sys_updated_on>
+        <sys_updated_on>2023-11-11 22:48:19</sys_updated_on>
     </sys_ui_page>
 </record_update>
