@@ -2,7 +2,7 @@
     <sys_ui_script action="INSERT_OR_UPDATE">
         <active>true</active>
         <description>Note: XMLHttpRequest is emulating a blocking GlideAjax call.&#13;
-The request needs to be blocking (synchronous) so that the language is set before any content is rendered.</description>
+The request needs to be blocking (synchronous) the first time so that the language is set before any content is rendered.</description>
         <global>false</global>
         <ignore_in_now_experience>false</ignore_in_now_experience>
         <name>x_424426_auto_lang.set_lang</name>
@@ -17,18 +17,19 @@ The request needs to be blocking (synchronous) so that the language is set befor
 	
 	window.x_424426_auto_lang = true;
 	
-	if (window.document.cookie.match("(^|;)\\s*x_424426_auto_lang\\s*=\\s*([^;]+)")?.pop()) {
-		// stop if this script was already called previously this session
+	if (window.document.cookie.match('(^|;)\\s*x_424426_auto_lang\\s*=\\s*([^;]+)')?.pop()) {
+		// stop if this script was already called previously in this session
 		return;
 	}
 	
 	const request = new window.XMLHttpRequest();
-	request.open("POST", "/xmlhttp.do", false);
-	request.setRequestHeader("Accept", "application/xml");
-	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	request.setRequestHeader("X-UserToken", window.g_ck);
-	request.send("sysparm_processor=SetLang&sysparm_scope=x_424426_auto_lang");
-	window.document.cookie = "x_424426_auto_lang=true";
+	request.open('POST', '/xmlhttp.do', false);
+	request.setRequestHeader('Accept', 'application/xml');
+	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	request.setRequestHeader('X-UserToken', window.g_ck);
+	request.send('sysparm_processor=SetLang&sysparm_scope=x_424426_auto_lang');
+	window.document.cookie = 'x_424426_auto_lang=true';
+	window.location.reload();
 
 })();
 ]]></script>
@@ -37,14 +38,14 @@ The request needs to be blocking (synchronous) so that the language is set befor
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-07 17:37:26</sys_created_on>
         <sys_id>daac42c997e43110d70ef207f053af7c</sys_id>
-        <sys_mod_count>24</sys_mod_count>
+        <sys_mod_count>28</sys_mod_count>
         <sys_name>x_424426_auto_lang.set_lang</sys_name>
         <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
         <sys_policy/>
         <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
         <sys_update_name>sys_ui_script_daac42c997e43110d70ef207f053af7c</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-08-18 19:40:19</sys_updated_on>
+        <sys_updated_on>2023-11-11 22:41:17</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>

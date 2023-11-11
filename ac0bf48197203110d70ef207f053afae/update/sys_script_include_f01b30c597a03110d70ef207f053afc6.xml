@@ -11,25 +11,30 @@
 /* eslint no-undef: "error" */
 function SetLang() {
 	try {
+			gs.info('MKR set lang1');
 		const user = gs.getUser();
-		if (user.getName() == "guest") {
+		if (user.getName() == 'guest') {
+						gs.info('MKR set lang2');
 			const acceptLanguages = _getAcceptedLanguages();
+						gs.info('MKR set lang3' + acceptLanguages);
 			for (let i = 0, length = acceptLanguages.length; i < length; i++) {
+
 				const isoLanguage = acceptLanguages[i];
-				const choiceGr = new GlideRecord("sys_choice");
-				choiceGr.addQuery("name", "sys_user");
-				choiceGr.addQuery("element", "preferred_language");
-				choiceGr.addQuery("language", isoLanguage);
+											gs.info('MKR set lang4' + isoLanguage);
+				const choiceGr = new GlideRecord('sys_choice');
+				choiceGr.addQuery('name', 'sys_user');
+				choiceGr.addQuery('element', 'preferred_language');
+				choiceGr.addQuery('language', isoLanguage);
 				choiceGr.setLimit(1);
 				choiceGr.query();
 				if (choiceGr.hasNext()) {
-					user.savePreference("user.language", isoLanguage);
+					user.savePreference('user.language', isoLanguage);
 					break;
 				}
 			}
 		}
 	} catch (e) {
-		let errorMessage = "[Auto Login Language] " + e.message();
+		let errorMessage = '[Auto Login Language] ' + e.message();
 		if (e.stack) {
 			errorMessage += e.stack;
 		}
@@ -37,27 +42,27 @@ function SetLang() {
 		gs.error(errorMessage);
 	}
 	
-	return "";
+	return '';
 	
 	function _getRequestHeader (headerName) {
-		const extensionPoints = new GlideScriptedExtensionPoint().getExtensions("AutoLangExt");
+		const extensionPoints = new GlideScriptedExtensionPoint().getExtensions('AutoLangExt');
 		if (extensionPoints.length) {
 			// always use the extension point with the lowest order
 			return extensionPoints[0].getRequestHeaderValue(headerName);
 		}
 		
-		throw new Error("No Extension Point Implementation for 'AutoLangExt'");
+		throw new Error('No Extension Point Implementation for "AutoLangExt"');
 	}
 	
 	function _getAcceptedLanguages() {
-		const acceptLanguage = _getRequestHeader("Accept-Language");
+		const acceptLanguage = _getRequestHeader('Accept-Language');
 		if (acceptLanguage) {
 			// Parsing according to Accept-Language definition:
 			// https://www.rfc-editor.org/rfc/rfc9110#field.accept-language
 			// da, en-gb;q=0.8, en;q=0.7
 			// "I prefer Danish, but will accept British English and other types of English".
-			const sortedLanguages = acceptLanguage.split(",").map(l => {
-				const langWithPrio = l.split(";q=");
+			const sortedLanguages = acceptLanguage.split(',').map(l => {
+				const langWithPrio = l.split(';q=');
 				const lang = langWithPrio[0].substring(0, 2);
 				
 				if (langWithPrio.length > 1) {
@@ -84,13 +89,13 @@ function SetLang() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-07 11:42:33</sys_created_on>
         <sys_id>f01b30c597a03110d70ef207f053afc6</sys_id>
-        <sys_mod_count>37</sys_mod_count>
+        <sys_mod_count>39</sys_mod_count>
         <sys_name>SetLang</sys_name>
         <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
         <sys_policy/>
         <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
         <sys_update_name>sys_script_include_f01b30c597a03110d70ef207f053afc6</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-09-11 14:54:16</sys_updated_on>
+        <sys_updated_on>2023-11-11 22:35:36</sys_updated_on>
     </sys_script_include>
 </record_update>

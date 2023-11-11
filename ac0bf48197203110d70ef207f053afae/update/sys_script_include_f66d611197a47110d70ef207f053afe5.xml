@@ -17,30 +17,30 @@ ConfigUtil.prototype = {
 
 	loadClassicUIStatus: function () {
 		const classicUIStatus = {
-			property_name: "glide.entry.page.script",
-			property_sys_id: "",
-			status: "",
-			status_label: ""
+			property_name: 'glide.entry.page.script',
+			property_sys_id: '',
+			status: '',
+			status_label: ''
 		};
 
-		const propertyGr = new GlideRecord("sys_properties");
-		propertyGr.addQuery("name", classicUIStatus.property_name);
+		const propertyGr = new GlideRecord('sys_properties');
+		propertyGr.addQuery('name', classicUIStatus.property_name);
 		propertyGr.setLimit(1);
 		propertyGr.query();
 		if (propertyGr.next()) {
 			classicUIStatus.property_sys_id = propertyGr.getUniqueValue();
 
 			const value = propertyGr.value.toString();
-			if (value.startsWith("x_424426_auto_lang.SetLang()")) {
-				classicUIStatus.status = "ok";
-				classicUIStatus.status_label = "OK";
+			if (value.startsWith('x_424426_auto_lang.SetLang()')) {
+				classicUIStatus.status = 'ok';
+				classicUIStatus.status_label = 'OK';
 			} else {
-				classicUIStatus.status = "required";
-				classicUIStatus.status_label = "Not yet configured";
+				classicUIStatus.status = 'required';
+				classicUIStatus.status_label = 'Not yet configured';
 			}
 		} else {
-			classicUIStatus.status = "error";
-			classicUIStatus.status_label = "Entry Page Script Property does not exist";
+			classicUIStatus.status = 'error';
+			classicUIStatus.status_label = 'Entry Page Script Property does not exist';
 		}
 		
 		return classicUIStatus;
@@ -48,7 +48,7 @@ ConfigUtil.prototype = {
 
 	loadPortalStatus: function () {
 		const portalStatus = [];
-		const portalGr = new GlideRecord("sp_portal");
+		const portalGr = new GlideRecord('sp_portal');
 		portalGr.query();
 		while (portalGr.next()) {
 			// Calculate the portal status
@@ -57,11 +57,11 @@ ConfigUtil.prototype = {
 			// the elements loaded are in this order: header (via theme) > login page
 			// Note: If neither theme nor login page are defined, a built-in non-widget-based login screen is loaded
 			// -> in this case we do not have any option to force the language loading
-			const theme = portalGr.getValue("theme");
+			const theme = portalGr.getValue('theme');
 			if (theme) {
-				const themeJSIncludeGr = new GlideRecord("m2m_sp_theme_js_include");
-				themeJSIncludeGr.addQuery("sp_theme", theme);
-				themeJSIncludeGr.addQuery("sp_js_include", "941d4ac997e43110d70ef207f053af59"); // Auto Language (JS Include)
+				const themeJSIncludeGr = new GlideRecord('m2m_sp_theme_js_include');
+				themeJSIncludeGr.addQuery('sp_theme', theme);
+				themeJSIncludeGr.addQuery('sp_js_include', '941d4ac997e43110d70ef207f053af59'); // Auto Language (JS Include)
 				themeJSIncludeGr.setLimit(1);
 				themeJSIncludeGr.query();
 				if (themeJSIncludeGr.next()) {
@@ -69,10 +69,10 @@ ConfigUtil.prototype = {
 						sys_id: portalGr.getUniqueValue(),
 						display_value: portalGr.getDisplayValue(),
 						url_suffix: portalGr.url_suffix.toString(),
-						status: "ok",
-						status_label: "OK",
+						status: 'ok',
+						status_label: 'OK',
 						config: {
-							table: "m2m_sp_theme_js_include",
+							table: 'm2m_sp_theme_js_include',
 							sys_id: themeJSIncludeGr.getUniqueValue()
 						}
 					});
@@ -81,26 +81,26 @@ ConfigUtil.prototype = {
 						sys_id: portalGr.getUniqueValue(),
 						display_value: portalGr.getDisplayValue(),
 						url_suffix: portalGr.url_suffix.toString(),
-						status: "required",
-						status_label: "Needs Configuration",
+						status: 'required',
+						status_label: 'Needs Configuration',
 						config: {
-							table: "m2m_sp_theme_js_include",
+							table: 'm2m_sp_theme_js_include',
 							fields: {
 								sp_theme: theme,
-								sp_js_include: "941d4ac997e43110d70ef207f053af59"
+								sp_js_include: '941d4ac997e43110d70ef207f053af59'
 							}
 						}
 					});
 				}
 			} else {
 				// if the theme is not set, it is sufficient to inject the login via the first widget(instance)
-				const loginPage = portalGr.getValue("login_page");
+				const loginPage = portalGr.getValue('login_page');
 				if (loginPage) {
 					const firstWidgetSysID = getFirstWidgetSysID(loginPage);
 					if (firstWidgetSysID) {
-						const dependencyGr = new GlideRecord("m2m_sp_widget_dependency");
-						dependencyGr.addQuery("sp_widget", firstWidgetSysID);
-						dependencyGr.addQuery("sp_dependency", "988c8e8997e43110d70ef207f053afa7"); // Auto Language (Widget Dependency)
+						const dependencyGr = new GlideRecord('m2m_sp_widget_dependency');
+						dependencyGr.addQuery('sp_widget', firstWidgetSysID);
+						dependencyGr.addQuery('sp_dependency', '988c8e8997e43110d70ef207f053afa7'); // Auto Language (Widget Dependency)
 						dependencyGr.setLimit(1);
 						dependencyGr.query();
 						if (dependencyGr.next()) {
@@ -108,10 +108,10 @@ ConfigUtil.prototype = {
 								sys_id: portalGr.getUniqueValue(),
 								display_value: portalGr.getDisplayValue(),
 								url_suffix: portalGr.url_suffix.toString(),
-								status: "ok",
-								status_label: "OK",
+								status: 'ok',
+								status_label: 'OK',
 								config: {
-									table: "m2m_sp_widget_dependency",
+									table: 'm2m_sp_widget_dependency',
 									sys_id: dependencyGr.getUniqueValue()
 								}
 							});
@@ -121,13 +121,13 @@ ConfigUtil.prototype = {
 								sys_id: portalGr.getUniqueValue(),
 								display_value: portalGr.getDisplayValue(),
 								url_suffix: portalGr.url_suffix.toString(),
-								status: "required",
-								status_label: "Needs Configuration",
+								status: 'required',
+								status_label: 'Needs Configuration',
 								config: {
-									table: "m2m_sp_widget_dependency",
+									table: 'm2m_sp_widget_dependency',
 									fields: {
 										sp_widget: firstWidgetSysID,
-										sp_dependency: "988c8e8997e43110d70ef207f053afa7"
+										sp_dependency: '988c8e8997e43110d70ef207f053afa7'
 									}
 								}
 							});
@@ -137,8 +137,8 @@ ConfigUtil.prototype = {
 							sys_id: portalGr.getUniqueValue(),
 							display_value: portalGr.getDisplayValue(),
 							url_suffix: portalGr.url_suffix.toString(),
-							status: "error",
-							status_label: "Not possible: Login Page has no Widgets"
+							status: 'error',
+							status_label: 'Not possible: Login Page has no Widgets'
 						});
 					}
 				} else {
@@ -149,8 +149,8 @@ ConfigUtil.prototype = {
 						sys_id: portalGr.getUniqueValue(),
 						display_value: portalGr.getDisplayValue(),
 						url_suffix: portalGr.url_suffix.toString(),
-						status: "error",
-						status_label: "Not possible: No Theme nor Login Page configured"
+						status: 'error',
+						status_label: 'Not possible: No Theme nor Login Page configured'
 					});
 				}
 			}
@@ -159,34 +159,34 @@ ConfigUtil.prototype = {
 		return portalStatus;
 		
 		function getFirstWidgetSysID(pageSysID) {
-			const containerGr = new GlideRecord("sp_container");
-			containerGr.addQuery("sp_page", pageSysID);
+			const containerGr = new GlideRecord('sp_container');
+			containerGr.addQuery('sp_page', pageSysID);
 			containerGr.setLimit(1);
 			containerGr.query();
 			if (containerGr.next()) {
-				const rowGr = new GlideRecord("sp_row");
-				rowGr.addQuery("sp_container", containerGr.sys_id);
+				const rowGr = new GlideRecord('sp_row');
+				rowGr.addQuery('sp_container', containerGr.sys_id);
 				rowGr.setLimit(1);
 				rowGr.query();
 				if (rowGr.next()) {
-					const columnGr = new GlideRecord("sp_column");
-					columnGr.addQuery("sp_row", rowGr.sys_id);
+					const columnGr = new GlideRecord('sp_column');
+					columnGr.addQuery('sp_row', rowGr.sys_id);
 					columnGr.setLimit(1);
 					columnGr.query();
 					if (columnGr.next()) {
-						const instanceGr = new GlideRecord("sp_instance");
-						instanceGr.addQuery("active", true);
-						instanceGr.addQuery("sp_column", columnGr.sys_id);
+						const instanceGr = new GlideRecord('sp_instance');
+						instanceGr.addQuery('active', true);
+						instanceGr.addQuery('sp_column', columnGr.sys_id);
 						instanceGr.setLimit(1);
 						instanceGr.query();
 						if (instanceGr.next()) {
-							return instanceGr.getValue("sp_widget") || "";
+							return instanceGr.getValue('sp_widget') || '';
 						}
 					}
 				}
 			}
 			
-			return "";
+			return '';
 		}
 	},
 
@@ -196,13 +196,13 @@ ConfigUtil.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-08 10:18:25</sys_created_on>
         <sys_id>f66d611197a47110d70ef207f053afe5</sys_id>
-        <sys_mod_count>13</sys_mod_count>
+        <sys_mod_count>15</sys_mod_count>
         <sys_name>ConfigUtil</sys_name>
         <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
-        <sys_policy>read</sys_policy>
+        <sys_policy/>
         <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
         <sys_update_name>sys_script_include_f66d611197a47110d70ef207f053afe5</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-08-18 18:12:16</sys_updated_on>
+        <sys_updated_on>2023-11-11 22:20:31</sys_updated_on>
     </sys_script_include>
 </record_update>

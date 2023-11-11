@@ -1,39 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rte_eb_script_operation">
     <sys_rte_eb_script_operation action="INSERT_OR_UPDATE">
         <conditional_fields/>
-        <conditional_script><![CDATA[/* Example Script
-(function(batch, output) {
-    for (var i = 0; i < batch.length; i++) {
-        
-        // step1: access the input variables
-        var a = batch[i].input;
-
-        // step2: your script code goes here
-        // based on the input variables assign variable 'b' to true or false.
-        var b = true; // or false;
-
-        // step3: set the output for each element
-        output[i] = b;
-    }
-})(batch, output);
-*/
-(function(batch, output) {
-    // add your code here
-    
-})(batch, output);]]></conditional_script>
+        <conditional_script/>
         <is_conditional>false</is_conditional>
-        <name/>
+        <name>Auto Login Language</name>
         <operation_group/>
-        <order>100</order>
-        <script><![CDATA[/* Example Script  (function(batch, output) {     for (var i = 0; i < batch.length; i++) {          //step1: access the input variables         var a = batch[i].input; //Value of the source field.           //step2: Your script/code goes here.         var b = a + 1;          //step3: set the output for each elements         output[i] = b;     }  })(batch, output); */  (function(batch, output) {  // add your code here. })(batch, output);]]></script>
+        <order/>
+        <script/>
         <source_sys_rte_eb_field/>
         <source_sys_rte_eb_fields/>
         <sys_class_name>sys_rte_eb_script_operation</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-07 16:19:12</sys_created_on>
         <sys_id>2bfabd8597a43110d70ef207f053af5d</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Auto Login Language</sys_name>
         <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
         <sys_policy/>
         <sys_rte_eb_definition/>
@@ -41,10 +22,10 @@
         <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
         <sys_update_name>sys_rte_eb_script_operation_2bfabd8597a43110d70ef207f053af5d</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-08-07 16:19:12</sys_updated_on>
+        <sys_updated_on>2023-11-11 22:13:28</sys_updated_on>
         <target_sys_rte_eb_field/>
         <target_sys_rte_eb_fields/>
         <type/>
-        <use_unique_input_sets>true</use_unique_input_sets>
+        <use_unique_input_sets>false</use_unique_input_sets>
     </sys_rte_eb_script_operation>
 </record_update>
