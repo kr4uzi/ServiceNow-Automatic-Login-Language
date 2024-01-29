@@ -5,6 +5,7 @@
         <enforce_license>log</enforce_license>
         <guided_setup_guid/>
         <hide_on_ui>false</hide_on_ui>
+        <ide_created/>
         <installed_as_dependency>false</installed_as_dependency>
         <js_level>es_latest</js_level>
         <licensable>true</licensable>
@@ -20,18 +21,19 @@
         <runtime_access_tracking>permissive</runtime_access_tracking>
         <scope>x_424426_auto_lang</scope>
         <scoped_administration>false</scoped_administration>
-        <short_description/>
+        <short_description>Automatically translates the Login Page for both Classic UI ("Backend") as well as the Service Portal to the user's native language (depending on the browser locale).</short_description>
         <source>x_424426_auto_lang</source>
         <store_correlation_id/>
         <store_url/>
+        <subscription_entitlement/>
         <sys_class_name>sys_app</sys_class_name>
         <sys_code/>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-07 11:39:39</sys_created_on>
         <sys_id>ac0bf48197203110d70ef207f053afae</sys_id>
-        <sys_mod_count>1</sys_mod_count>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-08-08 20:33:55</sys_updated_on>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_updated_by>markus.kraus</sys_updated_by>
+        <sys_updated_on>2024-01-29 20:24:04</sys_updated_on>
         <template/>
         <trackable>true</trackable>
         <uninstall_blocked>false</uninstall_blocked>
@@ -39,10 +41,6 @@
         <vendor/>
         <vendor_prefix/>
         <version>1.0.0</version>
-        <x_snc_devtools_documentation_url/>
-        <x_snc_devtools_maintainer/>
-        <x_snc_devtools_maintainer_email/>
-        <x_snc_devtools_repo_url/>
     </sys_app>
     <sys_translated_text action="delete_multiple" query="documentkey=ac0bf48197203110d70ef207f053afae"/>
 </record_update>
