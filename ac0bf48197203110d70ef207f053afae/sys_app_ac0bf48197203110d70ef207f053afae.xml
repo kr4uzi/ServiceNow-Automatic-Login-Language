@@ -16,6 +16,7 @@
         <logo/>
         <menu/>
         <name>Auto Login Language</name>
+        <package_json/>
         <private>false</private>
         <restrict_table_access>false</restrict_table_access>
         <runtime_access_tracking>permissive</runtime_access_tracking>
@@ -31,16 +32,16 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-07 11:39:39</sys_created_on>
         <sys_id>ac0bf48197203110d70ef207f053afae</sys_id>
-        <sys_mod_count>2</sys_mod_count>
-        <sys_updated_by>markus.kraus</sys_updated_by>
-        <sys_updated_on>2024-01-29 20:24:04</sys_updated_on>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
+        <sys_updated_on>2025-04-07 17:36:25</sys_updated_on>
         <template/>
         <trackable>true</trackable>
         <uninstall_blocked>false</uninstall_blocked>
         <user_role/>
         <vendor/>
         <vendor_prefix/>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </sys_app>
     <sys_translated_text action="delete_multiple" query="documentkey=ac0bf48197203110d70ef207f053afae"/>
 </record_update>

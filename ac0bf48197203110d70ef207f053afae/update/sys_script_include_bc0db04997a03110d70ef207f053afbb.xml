@@ -6,36 +6,33 @@
         <caller_access/>
         <client_callable>false</client_callable>
         <description>Implements extension point x_424426_auto_lang.AutoLangExt</description>
+        <mobile_callable>false</mobile_callable>
         <name>AutoLangExt</name>
+        <sandbox_callable>false</sandbox_callable>
         <script><![CDATA[/* global Class, GlideRecord, GlideScopedEvaluator */
 /* eslint no-undef: "error" */
 var AutoLangExt = Class.create();
 AutoLangExt.prototype = {
     initialize: function() {
-    },
-
-    getRequestHeaderValue: function() {
-        // Scoped Applications do not have access to GlideTransaction!
-		// The following hack is still (August 2023) working and can run a global API in scoped apps.
-		// sys_rte_eb_script_operation is used because it allows "Can update" for "All application" scopes
-		// This hack will not introduce any additional security problem to your instance - it is still
-		// create a global scoped implementation of the AutoLangExt Extension Point!
-		var scriptGr = new GlideRecord('sys_rte_eb_script_operation');
-		// Using a dummy RTE Script Operation record which is shipped with this scoped app
-		scriptGr.addQuery('sys_id', '2bfabd8597a43110d70ef207f053af5d');
+		const scriptGr = new GlideRecord('clone_cleanup_script');
+		scriptGr.addQuery('sys_scope', 'global');
 		scriptGr.setLimit(1);
 		scriptGr.query();
 		if (scriptGr.next()) {
-			scriptGr.sys_scope = 'global';
-			scriptGr.script =
-				'(function () {' +
-					'var header = GlideTransaction.get().getRequest().getHeader("Accept-Language");' +
-					'return header ? header.toString() : "";' +
-				'})();'
-			; 
-			var gse = GlideScopedEvaluator();
-			return gse.evaluateScript(scriptGr, 'script');
+			this.scriptGr = scriptGr;
+		} else {
+			throw new Error(this.type + ' requires a infusable script');
 		}
+    },
+
+    getRequestHeaderValue: function() {
+        this.scriptGr.script = `(function () {
+			var header = GlideTransaction.get().getRequest().getHeader('Accept-Language');
+			return header ? header.toString() : '';
+		})();`;
+
+		var gse = GlideScopedEvaluator();
+		return gse.evaluateScript(this.scriptGr, 'script');
     },
 
     type: 'AutoLangExt'
@@ -44,13 +41,13 @@ AutoLangExt.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-07 11:48:24</sys_created_on>
         <sys_id>bc0db04997a03110d70ef207f053afbb</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>AutoLangExt</sys_name>
         <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
         <sys_policy/>
         <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
         <sys_update_name>sys_script_include_bc0db04997a03110d70ef207f053afbb</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-11-11 22:13:12</sys_updated_on>
+        <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
+        <sys_updated_on>2025-04-07 16:46:35</sys_updated_on>
     </sys_script_include>
 </record_update>

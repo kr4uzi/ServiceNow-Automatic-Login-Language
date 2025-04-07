@@ -6,7 +6,9 @@
         <caller_access/>
         <client_callable>true</client_callable>
         <description/>
+        <mobile_callable>false</mobile_callable>
         <name>SetLang</name>
+        <sandbox_callable>true</sandbox_callable>
         <script><![CDATA[/* global gs, GlideRecord, GlideScriptedExtensionPoint, Set */
 /* eslint no-undef: "error" */
 function SetLang() {
@@ -24,14 +26,15 @@ function SetLang() {
 				choiceGr.query();
 				if (choiceGr.hasNext()) {
 					user.savePreference('user.language', isoLanguage);
+					gs.info('setting guest preference to: ' + isoLanguage);
 					break;
 				}
 			}
 		}
 	} catch (e) {
-		let errorMessage = '[Auto Login Language] ' + e.message();
+		let errorMessage = e.message();
 		if (e.stack) {
-			errorMessage += e.stack;
+			errorMessage += '\n' + e.stack;
 		}
 
 		gs.error(errorMessage);
@@ -43,7 +46,9 @@ function SetLang() {
 		const extensionPoints = new GlideScriptedExtensionPoint().getExtensions('AutoLangExt');
 		if (extensionPoints.length) {
 			// always use the extension point with the lowest order
-			return extensionPoints[0].getRequestHeaderValue(headerName);
+			const ext = extensionPoints[0];
+			ext.initialize();
+			return ext.getRequestHeaderValue(headerName);
 		}
 		
 		throw new Error('No Extension Point Implementation for "AutoLangExt"');
@@ -84,13 +89,13 @@ function SetLang() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-08-07 11:42:33</sys_created_on>
         <sys_id>f01b30c597a03110d70ef207f053afc6</sys_id>
-        <sys_mod_count>40</sys_mod_count>
+        <sys_mod_count>42</sys_mod_count>
         <sys_name>SetLang</sys_name>
         <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
         <sys_policy/>
         <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
         <sys_update_name>sys_script_include_f01b30c597a03110d70ef207f053afc6</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-11-11 22:51:27</sys_updated_on>
+        <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
+        <sys_updated_on>2025-04-07 16:58:24</sys_updated_on>
     </sys_script_include>
 </record_update>
