@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Automatically set the user profile language to the preferred language setting according to the browser settings (default: yes)</description>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_424426_auto_lang.enabled</name>
+        <read_roles/>
+        <suffix>enabled</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>kr4uzi@gmail.com</sys_created_by>
+        <sys_created_on>2025-04-12 09:21:14</sys_created_on>
+        <sys_id>d3da162a53b0aa10f41a1ab0a0490e69</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_424426_auto_lang.enabled</sys_name>
+        <sys_package display_value="Auto Login Language" source="x_424426_auto_lang">ac0bf48197203110d70ef207f053afae</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Auto Login Language">ac0bf48197203110d70ef207f053afae</sys_scope>
+        <sys_update_name>sys_properties_d3da162a53b0aa10f41a1ab0a0490e69</sys_update_name>
+        <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
+        <sys_updated_on>2025-04-12 09:21:14</sys_updated_on>
+        <type>boolean</type>
+        <value>true</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=d3da162a53b0aa10f41a1ab0a0490e69"/>
+</record_update>
